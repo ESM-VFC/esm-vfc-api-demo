@@ -6,4 +6,4 @@ COPY start_xpublish_standalone.py .
 
 EXPOSE 9000
 
-CMD python start_xpublish_standalone.py
+CMD [ "python",  "start_xpublish_standalone.py" ]
