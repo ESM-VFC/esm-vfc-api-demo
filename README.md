@@ -5,7 +5,7 @@
 ```shell
 git clone https://github.com/ESM-VFC/xpublish-standalone-demo.git
 cd xpublish-standalone/
-docker build -t xpublish-standalone-demo
+docker build -t xpublish-standalone-demo .
 docker run -p 9000:9000 xpublish-standalone-demo
 ```
 
