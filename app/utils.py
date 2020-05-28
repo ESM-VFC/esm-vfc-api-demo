@@ -1,36 +1,31 @@
-import json
-
-import numpy as np
+from flask import jsonify
 import xarray as xr
 
 
-# https://stackoverflow.com/a/47626762
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
-
-
-def extract_field_along_tracks(dataset, var_name, tracks):
+def extract_data_along_tracks(dataset, fieldnames, tracks):
     """Extract data from a given field along one or more ship tracks.
 
     Parameters
     ----------
     dataset : :class:`xarray.Dataset`
         Dataset containing data to extract.
-    var_name : str
-        Name of the field (data variable).
+    fieldnames : str or list
+        Name(s) of the field(s) (i.e., data variables) to use.
     tracks : dict-like
         One or more ship tracks in the GeoJSON format (must be a
         `FeatureCollection` with `LineString` features only).
 
     Returns
     -------
-    tracks_data : dict
-        Data extracted along ship tracks.
+    tracks_data : list of dict
+        Data extracted along ship tracks. Each dict has the following
+        format:
+        ``{'track_id': <id>, '<field1>': [<data>], '<field2>': [<data>], ...}``.
 
     """
+    if isinstance(fieldnames, str):
+        fieldnames = [fieldnames]
+
     tracks_data = []
 
     for feature in tracks["features"]:
@@ -39,13 +34,13 @@ def extract_field_along_tracks(dataset, var_name, tracks):
             for points in zip(*feature["geometry"]["coordinates"])
         ]
 
-        da_result = dataset[var_name].sel(
+        ds_extract = dataset.sel(
             lat=points_lat, lon=points_lon, method="nearest"
         )
 
-        tracks_data.append({
-            "track_id": feature["properties"]["track_id"],
-            var_name: da_result.values
-        })
+        tdata = {"track_id": feature["properties"]["track_id"]}
+        tdata.update({fn: ds_extract[fn].values for fn in fieldnames})
 
-    return {"data": json.dumps(tracks_data, cls=NumpyEncoder)}
+        tracks_data.append(tdata)
+
+    return tracks_data
