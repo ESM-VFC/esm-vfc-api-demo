@@ -1,10 +1,10 @@
-# Backend demo
+# ESM-VFC API demo
 
 ## Build and run
 
 ```shell
-git clone https://github.com/ESM-VFC/xpublish-standalone-demo.git
-cd xpublish-standalone-demo/
+git clone https://github.com/ESM-VFC/esm-vfc-api-demo.git
+cd esm-vfc-api-demo/
 docker-compose up
 ```
 
