@@ -1,17 +1,26 @@
-# xpublish standalone demo
+# Backend demo
 
 ## Build and run
 
 ```shell
 git clone https://github.com/ESM-VFC/xpublish-standalone-demo.git
-cd xpublish-standalone/
-docker build -t xpublish-standalone-demo .
-docker run -p 9000:9000 xpublish-standalone-demo
+cd xpublish-standalone-demo/
+docker-compose up
 ```
 
-This will start serving an Xarray example dataset on `http://0.0.0.0:9000`.
-See [start_xpublish_standalone.py](start_xpublish_standalone.py) for details.
+This will build and run two containers with the following services:
+
+- `xpublish`: serves a demo dataset (internal)
+- `app`: main backend application (development mode)
 
 ## Docs
 
-See [the xpublish docs](https://xpublish.readthedocs.io/).
+The backend application is running at `http://127.0.0.1:5000` (this is the
+default port used by Flask's development server). Note: the Docker daemon host
+could be different.
+
+API usage is shown in the `examples` folder.
+
+See also:
+
+- [xpublish docs](https://xpublish.readthedocs.io/)
