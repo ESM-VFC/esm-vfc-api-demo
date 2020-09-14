@@ -12,3 +12,7 @@ services:
     build: ./xpublish
     expose:
       - 9000
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    ports:
+      - "8888:8888"
