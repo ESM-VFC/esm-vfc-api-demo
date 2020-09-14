@@ -12,6 +12,7 @@ This will build and run two containers with the following services:
 
 - `xpublish`: serves a demo dataset (internal)
 - `app`: main backend application (development mode)
+- `jupyter`: Juypyter Scipy notebook instance for easy testing 
 
 ## Docs
 
